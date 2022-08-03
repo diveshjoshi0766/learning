@@ -1,0 +1,977 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://careertest.edumilestones.com/abroad-studies/range.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://onlyuni.edumilestones.com/abroad-studies/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+        integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+        integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <link rel="stylesheet" href="https://careertest.edumilestones.com/abroad-studies/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css">
+
+    <meta name="robots" content="noindex">
+
+    <title></title>
+    <meta property="og:url"
+        content="https://onlyuni.edumilestones.com/abroad-studies/?interest_id=10003&amp;course_level=2&amp;course_type=all&amp;location=&amp;course=no-course&amp;fees_range=350000,5000000">
+    <meta property="og:type" content="Website">
+    <meta property="og:title" content="">
+    <meta property="og:image" content="/crm/images/onlyuni-logoo.jpg-1657202788.">
+    <meta property="og:description" content="">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Edumilestones"><!-- Global site tag (gtag.js) - Google Analytics -->
+
+    <style>
+
+
+    </style>
+
+    <script>
+        function getXMLHTTP() {
+            var xmlhttp = false;
+            try {
+                xmlhttp = new XMLHttpRequest();
+            } catch (e) {
+                try {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                } catch (e) {
+                    try {
+                        xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+                    } catch (e1) {
+                        xmlhttp = false;
+                    }
+                }
+            }
+            return xmlhttp;
+        }
+
+        function getNewCourse(gn) {
+
+            var str = gn.id;
+
+            var college_name = gn.title;
+            var course_name = gn.innerHTML;
+
+            var course_name1 = course_name.replace("amp;", "");
+
+            var course_name2 = course_name1.replace("&", "an_nd");
+            var college_name1 = college_name.replace("&", "an_nd");
+
+            var res = str.split("selectBox");
+
+            var asNotice = document.getElementById("asNotice" + res[1]).value;
+            var courseLevel = document.getElementById("courseLevel").value;
+
+            var strURL = "/study-abroad-popular-programs/get-course-details.php?course_name=" + course_name2 +
+                "&college_name=" + college_name1 + "&dataValue=" + res[1] + "&asNotice=" + asNotice + "&courseLevel=" +
+                courseLevel;
+
+            var req = getXMLHTTP();
+            if (req) {
+
+                req.onreadystatechange = function() {
+                    if (req.readyState == 4) {
+                        // only if "OK"
+                        if (req.status == 200) {
+                            document.getElementById('hideBox' + res[1]).style.display = 'none';
+                            document.getElementById('hideBox' + res[1]).innerHTML = '';
+                            document.getElementById("resultDiv" + res[1]).innerHTML = req.responseText;
+                        } else {
+                            alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+                        }
+                    }
+                }
+                req.open("GET", strURL, true);
+                req.send(null);
+            }
+        }
+
+        function interested(i) {
+
+            var otherDomain = document.getElementById("otherDomain").value;
+            var channelId = document.getElementById("channelId").value;
+
+            var course_name1 = $('#applyCourse' + i.title).data('original-title').replace("&", "an_nd");
+
+            //var course_name1 = "";
+
+            var strURL = "https://onlyuni.edumilestones.com/abroad-studies/interested.php?pid=" + i.id + "&otherDomain=" +
+                otherDomain + "&channelId=" + channelId + "&course_name=" + course_name1 + "&save_sid=yes";
+
+            var req = getXMLHTTP();
+
+            if (req) {
+
+                req.onreadystatechange = function() {
+                    if (req.readyState == 4) {
+                        // only if "OK"
+                        if (req.status == 200) {
+
+                            var str = req.responseText.split(";");
+
+                            if (req.responseText == 1) {
+                                $("#as-modal").modal("show");
+                                document.getElementById("currentPid").value = i.id;
+                                document.getElementById("currentCourse").value = course_name1;
+                            } else if (req.responseText == 2) {
+                                document.getElementById(i.id).style.display = "none";
+                                document.getElementById("as-notice" + i.title).innerHTML =
+                                    "<p style='color: red;    margin: 10px 0;    margin: 27px 0;font-weight: 600;letter-spacing: 0.5px;'>Already Applied</p>";
+                            } else if (str[0] == "3") {
+                                document.getElementById(i.id).style.display = "none";
+                                document.getElementById("as-notice" + i.title).innerHTML =
+                                    "<p style='color: green;text-align: center;margin: 15px 0;'>Dear " + str[1] +
+                                    ", Your request is sent to counsellor. We will contact to you as soon as possible.</p>";
+                            }
+
+                        } else {
+                            alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+                        }
+                    }
+                }
+                req.open("GET", strURL, true);
+                req.send(null);
+            }
+        }
+
+        function as_check(c) {
+
+            var email = document.getElementById("as-email").value;
+
+            var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+            if (reg.test(email) == false) {
+                document.getElementById("exists").innerHTML = "Please Enter correct Email Address";
+            } else {
+
+                var otherDomain = document.getElementById("otherDomain").value;
+                var channelId = document.getElementById("channelId").value;
+
+                document.getElementById("exists").innerHTML = "";
+
+                var pid = document.getElementById("currentPid").value;
+                var course = document.getElementById("currentCourse").value;
+
+                var strURL = "https://onlyuni.edumilestones.com/abroad-studies/check.php?email=" + email + "&pid=" + pid +
+                    "&otherDomain=" + otherDomain + "&channelId=" + channelId + "&course_name=" + course + "&save_sid=yes";
+
+                var req = getXMLHTTP();
+
+                if (req) {
+
+                    req.onreadystatechange = function() {
+                        if (req.readyState == 4) {
+                            // only if "OK"
+                            if (req.status == 200) {
+
+                                var str = req.responseText.split(";");
+
+                                if (req.responseText == 1) {
+                                    document.getElementById("as-email-submit").style.display = "none";
+                                    document.getElementById("allInputs").style.display = "block";
+                                } else if (req.responseText == 2) {
+                                    document.getElementById("exists").innerHTML =
+                                        "<p style='color: red;'>Already Applied</p>";
+                                } else if (str[0] == "3") {
+                                    document.getElementById("as-email").style.display = "none";
+                                    document.getElementById("as-email-submit").style.display = "none";
+                                    document.getElementById("exists").innerHTML = "<p style='color: green;'>Dear " +
+                                        str[1] +
+                                        ", Your request is sent to counsellor. We will contact to you as soon as possible.</p>";
+                                }
+
+                            } else {
+                                alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+                            }
+                        }
+                    }
+                    req.open("GET", strURL, true);
+                    req.send(null);
+                }
+            }
+        }
+
+        function as_submit() {
+
+            var email = document.getElementById("as-email").value;
+            var name = document.getElementById("as-name").value;
+            var phone = document.getElementById("as-phone").value;
+            var location = document.getElementById("as-location").value;
+
+            if (email == "" || name == "" || phone == "" || location == "") {
+                document.getElementById("exists").innerHTML = "Please Fill All Data";
+            } else {
+
+                var otherDomain = document.getElementById("otherDomain").value;
+                var channelId = document.getElementById("channelId").value;
+
+                document.getElementById("exists").innerHTML = "";
+
+                var pid = document.getElementById("currentPid").value;
+                var course = document.getElementById("currentCourse").value;
+
+                var strURL = "https://onlyuni.edumilestones.com/abroad-studies/insert.php?email=" + email + "&pid=" + pid +
+                    "&name=" + name + "&phone=" + phone + "&location=" + location + "&otherDomain=" + otherDomain +
+                    "&channelId=" + channelId + "&course_name=" + course + "&save_sid=yes";
+
+                var req = getXMLHTTP();
+
+                if (req) {
+
+                    req.onreadystatechange = function() {
+                        if (req.readyState == 4) {
+                            // only if "OK"
+                            if (req.status == 200) {
+
+                                var str = req.responseText.split(";");
+
+                                if (req.responseText == 1) {
+                                    document.getElementById("exists").innerHTML =
+                                        "<p style='color: red;'>Already Applied</p>";
+                                } else if (str[2] == "SUCCESS") {
+                                    document.getElementById("as-email").style.display = "none";
+                                    document.getElementById("allInputs").style.display = "none";
+                                    document.getElementById("exists").innerHTML = "<p style='color: green;'>Dear " +
+                                        str[1] +
+                                        ", Your request is sent to counsellor. We will contact to you as soon as possible.</p>";
+                                } else {
+                                    document.getElementById("exists").innerHTML = "<p style='color: red;'>" + req
+                                        .responseText + "</p>";
+                                }
+
+                            } else {
+                                alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+                            }
+                        }
+                    }
+                    req.open("GET", strURL, true);
+                    req.send(null);
+                }
+            }
+        }
+
+        function filter(){
+            var e = document.getElementById("byCourse");
+            var byCourse = e.options[e.selectedIndex].value;
+
+            var e1 = document.getElementById("byCourseLevel");
+            var byCourseLevel = e1.options[e1.selectedIndex].value;
+
+            if(byCourse == "" && byCourseLevel != "")
+            {
+                window.top.location.href = "https://onlyuni.edumilestones.com/abroad-studies/filter/all/"+byCourseLevel;
+            }
+            else if(byCourse != "" && byCourseLevel == "")
+            {
+                window.top.location.href = "https://onlyuni.edumilestones.com/abroad-studies/filter/"+byCourse+"/all";
+            }
+            else if(byCourse != "" && byCourseLevel != "")
+            {
+                window.top.location.href = "https://onlyuni.edumilestones.com/abroad-studies/filter/"+byCourse+"/"+byCourseLevel;
+            }
+        }
+
+        function lead_submitLead() {
+            var name = document.getElementById("lead_name").value;
+            var email = document.getElementById("lead_email").value;
+            var number = document.getElementById("lead_number").value;
+            var location = document.getElementById("lead_location").value;
+            var channel_id = document.getElementById("lead_chn_id").value;
+            var captcha_token = document.getElementById("captcha_token").value;
+
+            var re =
+                /^(([^<>()[]\.,;:s@"]+(.[^<>()[]\.,;:s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/igm;
+
+            if (name == "" || email == "" || number == "" || location == "") {
+                document.getElementById("error").innerHTML =
+                    "<p style='    color: #ef373e;margin: 0;text-align: center;width: 100%;margin-bottom: 10px;font-size: 16px;font-weight: 600;'>Fields Can't be Empty</p>";
+            } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+                document.getElementById("error").innerHTML =
+                    "<p style='text-align: center;font-size: 18px;color: #ef373e;font-weight: 500;font-family: calibri;margin: 0;'>Enter Valid Email Address</p>";
+            } else if (!/^[A-Za-z ]+$/.test(name)) {
+                document.getElementById("error").innerHTML =
+                    "<p style='text-align: center;font-size: 18px;color: #ef373e;font-weight: 500;font-family: calibri;margin: 0;'>Invalid Name</p>";
+            } else if (!/^[A-Za-z ]+$/.test(location)) {
+                document.getElementById("error").innerHTML =
+                    "<p style='text-align: center;font-size: 18px;color: #ef373e;font-weight: 500;font-family: calibri;margin: 0;'>Invalid Location</p>";
+            } else {
+                var strURL = "https://onlyuni.edumilestones.com/abroad-studies/submitDirectLead.php?name=" + name +
+                    "&email=" + email + "&number=" + number + "&location=" + location + "&channel_id=" + channel_id +
+                    "&captcha_token=" + captcha_token;
+
+                var req = getXMLHTTP();
+                if (req) {
+
+                    req.onreadystatechange = function() {
+                        if (req.readyState == 4) {
+                            // only if "OK"
+                            if (req.status == 200) {
+                                if (req.responseText == "SUCCESS") {
+                                    document.getElementById("infoSuccess").innerHTML =
+                                        "<h2 style='color: green;margin: 0;text-align: center;width: 100%;margin-bottom: 10px;font-size: 22px;font-weight: 600;margin-top: 120px;line-height: 1.3;letter-spacing: 0.5px;'>Dear " +
+                                        name + ", Details submitted successfully. We Will Contact you Soon</h2>";
+                                    document.getElementById("formForLead").style.display = "none";
+                                } else {
+                                    document.getElementById("error").innerHTML =
+                                        "<p style='color: #ef373e;margin: 0;text-align: center;width: 100%;margin-bottom: 10px;font-size: 16px;font-weight: 600;'>" +
+                                        req.responseText + "</p>";
+                                }
+                            } else {
+                                alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+                            }
+                        }
+                    }
+                    req.open("GET", strURL, true);
+                    req.send(null);
+                }
+            }
+        }
+
+        $(document).ready(function() {
+            console.log('This is test');
+            //$('html,body').animate({scrollTop: $("#college-list").offset().top},'slow');
+        });
+
+        function filterIntId() {
+            var id = document.getElementById("interest_ids");
+            var int_id = id.options[id.selectedIndex].value;
+            var int_id_name = id.options[id.selectedIndex].text;
+
+            var cl = document.getElementById("course_level");
+            var course_level = cl.options[cl.selectedIndex].value;
+
+
+            console.log('ID:'+id+'/ intID:'+int_id+'/intidname:'+int_id_name+'/cl:'+cl+'/courselevel'+course_level);
+            // $.ajax('https://onlyuni.edumilestones.com/abroad-studies/?interest_id="+int_id+"&course_level="+course_level', {
+            //     type: 'GET',  // http method
+            //     data: { myData: 'This is my data.' },  // data to submit
+            //     success: function (data, status, xhr) {
+            //         $('p').append('status: ' + status + ', data: ' + data);
+            //     },
+            //     error: function (jqXhr, textStatus, errorMessage) {
+            //             $('p').append('Error' + errorMessage);
+            //     }
+            // });
+
+           var restURL = "https://onlyuni.edumilestones.com/abroad-studies/?interest_id="+int_id+"&course_level="+course_level;
+
+           $("#frame").attr("src", restURL);
+            // $.ajax({
+            //     type: 'GET',
+            //     url: restURL,
+            //     dataType:"html",
+            //     crossDomain: true,
+            //     xhrFields:{withCredentials: false},
+            //     success : function(data) {
+            //         console.log(data);
+            //     }
+            // });
+      
+
+        }
+
+        function collegeFilter() {
+            var current_int_id = document.getElementById("current_int_id").value;
+
+            var cl = document.getElementById("course_level");
+            var course_level = cl.options[cl.selectedIndex].value;
+
+            var college_name = document.getElementById("college_nameR").value;
+
+            window.location.href = "https://onlyuni.edumilestones.com/abroad-studies/?interest_id=" +
+                current_int_id + "&course_level=" + course_level + "&college=" + college_name;
+        }
+
+        function filter() {
+
+            $(".filter-search-btn").html("<i class='fas fa-circle-notch fa-spin'></i>");
+
+            var cl = document.getElementById("course_level");
+            var course_level = cl.options[cl.selectedIndex].value;
+
+            // var p = document.getElementById("popularity");
+            // var popularity = p.options[p.selectedIndex].value;
+
+            var ct = document.getElementById("course_type");
+            var course_type = ct.options[ct.selectedIndex].value;
+
+
+            var current_int_id = document.getElementById("current_int_id").value;
+
+            var l = document.getElementById("location");
+            var location = l.options[l.selectedIndex].value;
+
+            if (location == "") {
+                var location = "all";
+            }
+
+            var course = document.getElementById("searchCourse").value;
+
+            if (course == "") {
+                var course = "no-course";
+            }
+
+            if (current_int_id != "" && course_level != "") {
+                window.location.href = "https://onlyuni.edumilestones.com/abroad-studies/?interest_id=" +
+                    current_int_id + "&course_level=" + course_level + "&course_type=" + course_type +
+                    "&location=" + location + "&course=" + course;
+            }
+        }
+
+        function filter_t() {
+            var cl = document.getElementById("course_level");
+            var course_level = cl.options[cl.selectedIndex].value;
+
+            //var location = document.getElementById("location").value;
+            var current_int_id = document.getElementById("current_int_id").value;
+
+            var l = document.getElementById("location");
+            var location = l.options[l.selectedIndex].value;
+
+            if (location == "")
+                var location = "all";
+
+            var ft = document.getElementById("filter_t");
+            var ft = ft.options[ft.selectedIndex].value;
+
+            window.location.href = "https://onlyuni.edumilestones.com/abroad-studies/?interest_id=" +
+                current_int_id + "&course_level=" + course_level + "&course_type=all&location=" + location +
+                "&popularity=all&tied-up-colleges=" + ft;
+        }
+
+        function getCollegesName() {
+            var college_name = document.getElementById("college_name").value;
+
+            if (college_name.length > 2) {
+
+                var cl = document.getElementById("course_level");
+                var course_level = cl.options[cl.selectedIndex].value;
+
+                var unique_ids = document.getElementById("searchResultUids").value;
+
+                $(".clg-search-btn").html("<i class='fas fa-circle-notch fa-spin'></i>");
+
+                var strURL =
+                    "https://onlyuni.edumilestones.com/abroad-studies/get-college-name.php?college_name=" +
+                    college_name + "&course_level=" + course_level + "&unique_ids=" + unique_ids;
+
+                var req = getXMLHTTP();
+                if (req) {
+
+                    req.onreadystatechange = function() {
+                        if (req.readyState == 4) {
+                            // only if "OK"
+                            if (req.status == 200) {
+                                $(".clg-search-btn").html("Search");
+                                document.getElementById("collegeNamesDiv").innerHTML = req.responseText;
+                            } else {
+                                alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+                            }
+                        }
+                    }
+                    req.open("GET", strURL, true);
+                    req.send(null);
+                }
+            } else {
+                alert("Please Enter proper College Name!")
+            }
+        }
+
+        function setValue(clg) {
+            document.getElementById('college_nameR').value = clg.id;
+            document.getElementById('college_name').value = clg.innerHTML;
+            document.getElementById('clg_list').innerHTML = '';
+            document.getElementById('clg_list').style.display = 'none';
+            collegeFilter();
+        }
+
+        function getNewCourse1(i) {
+            str = i.id;
+
+            var college_name = i.title;
+            var course_name = i.innerHTML;
+
+            var current_int_id = document.getElementById("current_int_id").value;
+
+            var cl = document.getElementById("course_level");
+            var course_level = cl.options[cl.selectedIndex].value;
+
+            var course_name = course_name.replace("amp;", "");
+
+            var college_name = college_name.replace("&", "an_nd");
+            var course_name = course_name.replace("&", "an_nd");
+
+            var res = str.split("selectBox");
+
+            var strURL =
+                "https://onlyuni.edumilestones.com/abroad-studies/get-course-details1.php?course_name=" +
+                course_name + "&college_name=" + college_name + "&dataValue=" + res[1] + "&int_id=" +
+                current_int_id + "&course_level=" + course_level + "&college=";
+
+            var req = getXMLHTTP();
+            if (req) {
+
+                req.onreadystatechange = function() {
+                    if (req.readyState == 4) {
+                        // only if "OK"
+                        if (req.status == 200) {
+                            document.getElementById('hideBox1' + res[1]).style.display = 'none';
+                            document.getElementById("resultDiv1" + res[1]).innerHTML = req.responseText;
+                        } else {
+                            alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+                        }
+                    }
+                }
+                req.open("GET", strURL, true);
+                req.send(null);
+            }
+        }
+
+        function showAllBenefits(b) {
+            var benefits = b.id;
+            var strArray = benefits.split(",");
+
+            $("#setBenefits").html("");
+
+            for (var i = 0; i < strArray.length; i++) {
+                $("#setBenefits").append(
+                    "<p style='display: inline-block;font-weight: 600;margin-left: 8px;font-size: 14px;letter-spacing: 0.5px;'> <i class='far fa-check-circle'></i> " +
+                    strArray[i] + "</p>");
+            }
+            $("#benefitsModal").modal("show");
+        }
+
+        function interested1(i) {
+
+            var channelId = document.getElementById("channelId").value;
+
+            var strURL = "https://onlyuni.edumilestones.com/abroad-studies/interested_a.php?pid=" + i.id +
+                "&channelId=" + channelId;
+
+            var req = getXMLHTTP();
+
+            if (req) {
+
+                req.onreadystatechange = function() {
+                    if (req.readyState == 4) {
+                        // only if "OK"
+                        if (req.status == 200) {
+
+                            var str = req.responseText.split(";");
+
+                            if (req.responseText == 1) {
+                                $("#as-modal1").modal("show");
+                                document.getElementById("as-email1").value = "";
+                                document.getElementById("exists1").innerHTML = "";
+                                document.getElementById("currentPid1").value = i.id;
+                            } else if (req.responseText == 2) {
+                                document.getElementById(i.id).style.backgroundColor = "#24810d";
+                                document.getElementById(i.id).style.borderColor = "#24810d";
+                                document.getElementById(i.id).innerHTML = "Already Applied";
+                            } else if (str[0] == "3") {
+                                document.getElementById(i.id).style.backgroundColor = "#24810d";
+                                document.getElementById(i.id).style.borderColor = "#24810d";
+                                document.getElementById(i.id).innerHTML = "Applied";
+                            }
+
+                        } else {
+                            alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+                        }
+                    }
+                }
+                req.open("GET", strURL, true);
+                req.send(null);
+            }
+        }
+
+        function as_check1(c) {
+
+            var email = document.getElementById("as-email1").value;
+
+            var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+            if (reg.test(email) == false) {
+                document.getElementById("exists1").innerHTML = "Please Enter correct Email Address";
+            } else {
+
+                var channelId = document.getElementById("channelId").value;
+
+                document.getElementById("exists1").innerHTML = "";
+
+                var pid = document.getElementById("currentPid1").value;
+
+                var strURL = "https://onlyuni.edumilestones.com/abroad-studies/check_a.php?email=" + email +
+                    "&pid=" + pid + "&channelId=" + channelId;
+
+                var req = getXMLHTTP();
+
+                if (req) {
+
+                    req.onreadystatechange = function() {
+                        if (req.readyState == 4) {
+                            // only if "OK"
+                            if (req.status == 200) {
+
+                                var str = req.responseText.split(";");
+
+                                if (req.responseText == 1) {
+                                    document.getElementById("as-email-submit1").style.display = "none";
+                                    document.getElementById("allInputs1").style.display = "block";
+                                } else if (req.responseText == 2) {
+                                    document.getElementById("exists1").innerHTML =
+                                        "<p style='color: red;'>Already Applied</p>";
+
+                                    setTimeout(function() {
+
+                                        $("#as-modal1").modal("hide");
+
+                                        document.getElementById(pid).style.backgroundColor =
+                                            "#24810d";
+                                        document.getElementById(pid).style.borderColor = "#24810d";
+                                        document.getElementById(pid).innerHTML = "Already Applied";
+                                    }, 1500);
+                                } else if (str[0] == "3") {
+                                    document.getElementById("as-email1").style.display = "none";
+                                    document.getElementById("as-email-submit1").style.display = "none";
+                                    document.getElementById("exists1").innerHTML =
+                                        "<p style='color: green;'>Dear " + str[1] +
+                                        ", Your request is recieved successfully. We will contact to you as soon as possible.</p>";
+
+                                    setTimeout(function() {
+
+                                        $("#as-modal1").modal("hide");
+
+                                        document.getElementById(pid).style.backgroundColor =
+                                            "#24810d";
+                                        document.getElementById(pid).style.borderColor = "#24810d";
+                                        document.getElementById(pid).innerHTML = "Applied";
+                                    }, 1500);
+                                }
+
+                            } else {
+                                alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+                            }
+                        }
+                    }
+                    req.open("GET", strURL, true);
+                    req.send(null);
+                }
+            }
+        }
+
+        function as_submit1() {
+
+            var email = document.getElementById("as-email1").value;
+            var name = document.getElementById("as-name1").value;
+            var phone = document.getElementById("as-phone1").value;
+            var location = document.getElementById("as-location1").value;
+
+            if (email == "" || name == "" || phone == "" || location == "") {
+                document.getElementById("exists1").innerHTML = "Please Fill All Data";
+            } else {
+
+                var channelId = document.getElementById("channelId").value;
+
+                document.getElementById("exists1").innerHTML = "";
+
+                var pid = document.getElementById("currentPid1").value;
+
+                var strURL = "https://onlyuni.edumilestones.com/abroad-studies/insert_a.php?email=" + email +
+                    "&pid=" + pid + "&name=" + name + "&phone=" + phone + "&location=" + location +
+                    "&channelId=" + channelId;
+
+                var req = getXMLHTTP();
+
+                if (req) {
+
+                    req.onreadystatechange = function() {
+                        if (req.readyState == 4) {
+                            // only if "OK"
+                            if (req.status == 200) {
+
+                                var str = req.responseText.split(";");
+
+                                if (req.responseText == 1) {
+                                    document.getElementById("exists1").innerHTML =
+                                        "<p style='color: red;'>Already Applied</p>";
+
+                                    setTimeout(function() {
+
+                                        $("#as-modal1").modal("hide");
+
+                                        document.getElementById(pid).style.backgroundColor =
+                                            "#24810d";
+                                        document.getElementById(pid).style.borderColor = "#24810d";
+                                        document.getElementById(pid).innerHTML = "Already Applied";
+                                    }, 1500);
+                                } else if (str[2] == "SUCCESS") {
+                                    document.getElementById("as-email1").style.display = "none";
+                                    document.getElementById("allInputs1").style.display = "none";
+                                    document.getElementById("exists1").innerHTML =
+                                        "<p style='color: green;'>Dear " + str[1] +
+                                        ", Your request is recieved successfully. We will contact to you as soon as possible.</p>";
+
+                                    setTimeout(function() {
+
+                                        $("#as-modal1").modal("hide");
+
+                                        document.getElementById(pid).style.backgroundColor =
+                                            "#24810d";
+                                        document.getElementById(pid).style.borderColor = "#24810d";
+                                        document.getElementById(pid).innerHTML = "Applied";
+                                    }, 1500);
+                                } else {
+                                    document.getElementById("exists1").innerHTML =
+                                        "<p style='color: red;'>" + req.responseText + "</p>";
+                                }
+
+                            } else {
+                                alert("There was a problem while using XMLHTTP:\n" + req.statusText);
+                            }
+                        }
+                    }
+                    req.open("GET", strURL, true);
+                    req.send(null);
+                }
+            }
+        }
+    </script>
+    <style>
+    .ab-box {
+        border-top: 3px solid #20419b;
+    }
+
+    .ab-bottom-box {
+        margin-bottom: 20px;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .nav {
+        border-color: #fff;
+    }
+
+    .nav-tabs>li.active>a {
+        background: #4d66b3 !important;
+        color: #fff !important;
+        border-radius: 0;
+    }
+
+    .nav-tabs>li>a {
+        background: #fff;
+        color: #000;
+        border: 1px solid #ddd !important;
+        border-radius: 0 !important;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .nav-tabs>li>a:hover {
+        border: 1px solid #ddd !important;
+        background: #fff !important;
+    }
+
+    .nav-tabs>.active>a:hover {
+        background: #4d66b3 !important;
+        color: #fff !important;
+        border-radius: 0 !important;
+        cursor: pointer !important;
+    }
+
+    .tab-content p {
+        font-size: 20px;
+        text-align: justify;
+        margin: 25px 0;
+        line-height: 1.5;
+        color: #000;
+    }
+
+    .tab-content ul {
+        list-style-type: none;
+        text-align: left;
+        padding-left: 0;
+        margin-top: 25px;
+    }
+
+    .tab-content ul li {
+        font-size: 20px;
+        margin: 12px 0;
+        color: #000;
+    }
+
+    .tab-pane {
+        height: 160px;
+        overflow: hidden;
+    }
+
+    .flags {
+        margin-top: 12px;
+    }
+
+    .flags .col-md-2 img {
+        min-height: 120px;
+        max-height: 120px;
+    }
+
+    .btns a {
+        color: #fff;
+        font-size: 18px;
+    }
+
+    .btns span {
+        color: #fff;
+        font-size: 18px;
+        padding: 0 5px;
+    }
+
+    .cForm {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+        padding: 15px;
+        width: 70%;
+        border: 2px solid #f5f5f5;
+        margin: 28px auto;
+    }
+
+    .cForm input {
+        border-radius: 0;
+        box-shadow: none;
+        outline: none;
+        padding: 20px 10px;
+        font-size: 17px;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .flags .col-md-2 {
+            padding: 3px;
+        }
+
+        .flags .col-md-2 img {
+            min-width: 100%;
+        }
+
+        .nav-tabs>li {
+            width: 100%;
+        }
+
+        .nav-tabs>li>a {
+            font-size: 14px;
+        }
+
+        .headerUid>.col-xs-7 h4 {
+            font-size: 14px !important;
+        }
+
+        .top-second-part {
+            width: unset !important;
+            height: unset !important;
+        }
+
+        .lead-form-div {
+            margin: 10px auto !important;
+        }
+
+        .tab-pane {
+            height: 100%;
+        }
+    }
+
+    .pagination::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    /* Track */
+    .pagination::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    .pagination::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+    /* Handle on hover */
+    .pagination::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .filter .col-md-6 select,
+    .filter .col-md-6 input {
+        border-radius: 0;
+        outline: none;
+        box-shadow: none;
+        margin-bottom: 12px;
+        min-height: 38px;
+    }
+
+    .filter select,
+    .filter input,
+    .btn.selectpicker {
+        min-height: 42px !important;
+    }
+    </style>
+    <link rel="shortcut icon" type="image/x-icon"
+        href="https://www.edumilestones.com/crm/images/onlyuni-logoo.jpg-1657202788.">
+    <meta http-equiv="origin-trial"
+        content="A9wkrvp9y21k30U9lU7MJMjBj4USjLrGwV+Z8zO3J3ZBH139DOnCv3XLK2Ii40S94HG1SZ/Zeg2GSHOD3wlWngYAAAB7eyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGV0YWdtYW5hZ2VyLmNvbTo0NDMiLCJmZWF0dXJlIjoiUHJpdmFjeVNhbmRib3hBZHNBUElzIiwiZXhwaXJ5IjoxNjYxMjk5MTk5LCJpc1RoaXJkUGFydHkiOnRydWV9">
+    <script type="text/javascript" async=""
+        src="https://googleads.g.doubleclick.net/pagead/viewthroughconversion/956627931/?random=1658405233551&amp;cv=9&amp;fst=1658405233551&amp;num=1&amp;bg=ffffff&amp;guid=ON&amp;resp=GooglemKTybQhCsO&amp;eid=376635470&amp;u_h=864&amp;u_w=1536&amp;u_ah=824&amp;u_aw=1536&amp;u_cd=24&amp;u_his=3&amp;u_tz=330&amp;u_java=false&amp;u_nplug=5&amp;u_nmime=2&amp;gtm=2oa7i0&amp;sendb=1&amp;ig=1&amp;data=event%3Dgtag.config&amp;frm=0&amp;url=https%3A%2F%2Fonlyuni.edumilestones.com%2Fabroad-studies%2F%3Finterest_id%3D10003%26course_level%3D2%26course_type%3Dall%26location%3D%26course%3Dno-course%26fees_range%3D350000%2C5000000&amp;ref=https%3A%2F%2Fonlyuni.edumilestones.com%2Fabroad-studies%2F%3Finterest_id%3D10003%26course_level%3D2%26course_type%3Dall%26location%3D%26course%3Dno-course%26fees_range%3D2200000%2C3350000&amp;hn=www.googleadservices.com&amp;async=1&amp;rfmt=3&amp;fmt=4">
+    </script>
+    <script type="text/javascript" async=""
+        src="https://googleads.g.doubleclick.net/pagead/viewthroughconversion/956627931/?random=1658405233564&amp;cv=9&amp;fst=1658405233564&amp;num=1&amp;userId=replace%20with%20value&amp;bg=ffffff&amp;guid=ON&amp;resp=GooglemKTybQhCsO&amp;eid=376635470&amp;u_h=864&amp;u_w=1536&amp;u_ah=824&amp;u_aw=1536&amp;u_cd=24&amp;u_his=3&amp;u_tz=330&amp;u_java=false&amp;u_nplug=5&amp;u_nmime=2&amp;gtm=2oa7i0&amp;sendb=1&amp;ig=1&amp;data=event%3Dpage_view&amp;frm=0&amp;url=https%3A%2F%2Fonlyuni.edumilestones.com%2Fabroad-studies%2F%3Finterest_id%3D10003%26course_level%3D2%26course_type%3Dall%26location%3D%26course%3Dno-course%26fees_range%3D350000%2C5000000&amp;ref=https%3A%2F%2Fonlyuni.edumilestones.com%2Fabroad-studies%2F%3Finterest_id%3D10003%26course_level%3D2%26course_type%3Dall%26location%3D%26course%3Dno-course%26fees_range%3D2200000%2C3350000&amp;hn=www.googleadservices.com&amp;async=1&amp;rfmt=3&amp;fmt=4">
+    </script>
+</head>
+
+<body>
+    <?php 
+
+$htmlContent = file_get_contents('https://onlyuni.edumilestones.com/abroad-studies/?interest_id=10003&course_level=2&course_type=all&location=&course=no-course&fees_range=350000,5000000');
+//$htmlContent = '<div class="my-con">Content goes here...</div>';
+
+preg_match('/<div class="container-fluid filter">(.*?)<div class="container-fluid as-main-area">/s', $htmlContent, $match);
+
+//Extract and returns the content including the parent element (tags):
+
+echo $match[0];
+echo '<br>*********<br>';
+//echo $match[1];
+?>
+
+<div id="mydiv">
+     <iframe id="frame" src="" width="100%" height="300">
+     </iframe>
+ </div>
+
+</body>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  -->
+<script>
+    $(document).ready(function(){
+        console.log('This is working');
+
+        $('h2').html('This is test data');
+    })
+</script>
+
+</html>
